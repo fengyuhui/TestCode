@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 // Definition for a binary tree node.
  class TreeNode {
      int val;
@@ -57,4 +60,25 @@ public class Tree_easy_now {
             }
         }
     }
+
+
+    //104二叉树的最大深度
+    public int maxDepth(TreeNode root) {
+        if(root!=null){
+            return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+        }else
+            return 0;
+    }
+
+
+    //107. 二叉树的层次遍历 II
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        return list;
+    }
+    public void levelSub(TreeNode root, int level, ArrayList list){
+
+    }
+
+
 }

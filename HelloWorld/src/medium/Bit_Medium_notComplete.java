@@ -1,3 +1,5 @@
+package medium;
+
 public class Bit_Medium_notComplete {
     public static void main(String[] args){
 

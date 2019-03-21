@@ -1,3 +1,5 @@
+package easy;
+
 import java.util.Arrays;
 
 public class Greedy_easy_notComplete {

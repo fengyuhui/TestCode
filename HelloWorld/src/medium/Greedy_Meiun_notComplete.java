@@ -1,3 +1,5 @@
+package medium;
+
 public class Greedy_Meiun_notComplete {
     public static void main(String[] args){
         int[] nums = {3,2,1,0,4};
@@ -24,4 +26,20 @@ public class Greedy_Meiun_notComplete {
         return false;
     }
 
+    //134. 加油站 分段不重要，只要全部油>消耗油，就一定能回到起点。所以重点就是找出起点而已
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int total = 0, start = 0, currentSums = 0;
+        for(int i = 0; i<gas.length; i++){
+            total+=gas[i] - cost[i];
+            currentSums+=gas[i] - cost[i];
+            if(currentSums<0){
+                currentSums = 0;
+                start = i+1;
+            }
+        }
+        if(total<0)
+            return -1;
+        else
+            return start;
+    }
 }

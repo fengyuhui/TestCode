@@ -1,3 +1,5 @@
+package medium;
+
 import java.util.*;
 
 public class Stack_medium_notComplete {
@@ -235,10 +237,10 @@ public class Stack_medium_notComplete {
 
     //用栈来实现非递归的中序遍历
         /*public class BSTIterator {
-        private Stack<TreeNode> stack = new Stack<>();
+        private Stack<easy.TreeNode> stack = new Stack<>();
 
-        public BSTIterator(TreeNode root) {
-            TreeNode current = root;
+        public BSTIterator(easy.TreeNode root) {
+            easy.TreeNode current = root;
             while (current != null) {
                 stack.push(current);
                 current = current.left;
@@ -250,8 +252,8 @@ public class Stack_medium_notComplete {
         }
 
         public int next() {
-            TreeNode next = stack.pop();
-            TreeNode current = next.right;
+            easy.TreeNode next = stack.pop();
+            easy.TreeNode current = next.right;
             while (current != null) {
                 stack.push(current);
                 current = current.left;

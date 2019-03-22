@@ -1,3 +1,5 @@
+package easy;
+
 import com.sun.deploy.util.StringUtils;
 import sun.swing.StringUIClientPropertyKey;
 

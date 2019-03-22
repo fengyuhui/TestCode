@@ -1,3 +1,5 @@
+package easy;
+
 public class Heap_easy_notComplete {
     public static void main(String[] args) {
 

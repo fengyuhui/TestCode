@@ -12,19 +12,7 @@ import java.util.List;
 
 public class Tree_easy_now {
     public static void main(String args[]){
-        byte a = 127;
-        byte b = 127;
-        // b = a + b; // error : cannot convert from int to byte
-        //b += a; // b=-2，因为取值范围是-128到127。127+1是-128；
-        b=b++;//对于a = a++，大家都知道，a++参与运算的话，是a先参与运算，再执行a自增操作。但这里尴尬的是，++的优先级是高于=的，因此，java的处理方法是，会在内存里先开辟一个临时空间，存放a的值，然后a自增，之后再从临时空间拿出来a，赋给a。
-        int i = 0;
-        int[] s = {0,1};
-        System.out.println(s[i++]);
-        int k = 2;
-        i = k++;//i-2
-        i+=k++;
 
-        System.out.println(b);
         return;
     }
 

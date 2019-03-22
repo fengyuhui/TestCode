@@ -12,10 +12,7 @@ import java.util.List;
 
 public class Tree_easy_now {
     public static void main(String args[]){
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of f9dbb29... a=a++
         return;
     }
 
@@ -81,7 +78,6 @@ public class Tree_easy_now {
         return list;
     }
     public void levelSub(TreeNode root, int level, ArrayList list){
-
     }
 
 

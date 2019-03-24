@@ -1,8 +1,7 @@
 package hard;
 
-public class Greedy_hard_notComplete {
+public class Hard_all {
     public static void main(String[] args){
-
+        
     }
-
 }

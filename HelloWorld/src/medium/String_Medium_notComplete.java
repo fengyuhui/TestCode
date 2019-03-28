@@ -3,8 +3,9 @@ package medium;
 import java.util.Stack;
 
 public class String_Medium_notComplete {
-    public static void main(){
-
+    public static void main(String[] args){
+        String_Medium_notComplete test = new String_Medium_notComplete();
+        test.decodeString("3[a]2[bc]");
     }
 
     //227. 基本计算器 II 主要是减法的话，就把后面的数字变为负数。并且小心数字>10的情况
@@ -104,6 +105,31 @@ public class String_Medium_notComplete {
         int y = a1*b2 + a2*b1;
         return x + "+" + y +"i";
     }
+
+    //394. 字符串解码
+    int indexForDecode = 0; //标识字符串的下标，用来递归
+    public String decodeString(String s) {
+        StringBuffer sb = new StringBuffer();
+        for(;indexForDecode<s.length() && s.charAt(indexForDecode)!=']'; indexForDecode++) {
+            int num = 0;
+            if ((s.charAt(indexForDecode) > 'a' || s.charAt(indexForDecode) == 'a') && (s.charAt(indexForDecode) < 'z' || s.charAt(indexForDecode) == 'z') ||
+                    (s.charAt(indexForDecode) > 'A' || s.charAt(indexForDecode) == 'A') && (s.charAt(indexForDecode) < 'Z' || s.charAt(indexForDecode) == 'Z')) {
+                sb.append(s.charAt(indexForDecode));
+            }else {
+                while((s.charAt(indexForDecode) > '0' || s.charAt(indexForDecode) == '0') && (s.charAt(indexForDecode) < '9' || s.charAt(indexForDecode) == '9')) {
+                    num = num * 10 + s.charAt(indexForDecode) - '0';
+                    indexForDecode++;
+                }
+                indexForDecode++;
+                String temp = decodeString(s);
+                for(int i = 0; i<num; i++){
+                    sb.append(temp);
+                }
+            }
+        }
+        return sb.toString();
+    }
+
 
 
 

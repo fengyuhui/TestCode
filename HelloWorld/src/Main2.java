@@ -48,7 +48,7 @@ public class Main {
 import java.lang.reflect.Array;
 import java.util.*;
 
-public class Main {
+public class Main2 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();

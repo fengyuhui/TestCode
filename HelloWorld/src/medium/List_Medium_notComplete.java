@@ -93,10 +93,61 @@ public class List_Medium_notComplete {
     }
 
 
-    //
+    //92. 反转链表 II 重点是只能遍历一次链表
     public ListNode reverseBetween(ListNode head, int m, int n) {
         ListNode ans = head;
+        ListNode pre = head;
+        ListNode rear = head;
+        m--;
+        n--;
+        if(m == n)
+            return ans;
+        if(m==0){
+            for (int i = 0; i < n; i++) {
+                if (rear.next != null) {
+                    rear = rear.next;
+                }
+            }
 
+            ans = rear;
+            for(int i = 0; i<n; i++){
+                ListNode temp = pre.next;
+                ListNode temp2 = rear.next;
+
+                pre.next = temp2;
+                rear.next = pre;
+
+                pre = temp;
+            }
+        }else {
+            for (int i = 0; i < n - m + 1; i++) {
+                if (rear.next != null) {
+                    rear = rear.next;
+                }
+            }
+
+            for (int i = 0; i < m - 1; i++) {
+                rear = rear.next;
+                pre = pre.next;
+            }
+
+            if (pre.next == rear) {
+                int temp = pre.val;
+                pre.val = rear.val;
+                rear.val = temp;
+                return ans;
+            }
+
+            //将pre的next逐一插到rear的后面
+            while (pre.next != rear) {
+                ListNode temp = pre.next;
+                ListNode temp2 = rear.next;
+
+                pre.next = temp.next;
+                rear.next = temp;
+                temp.next = temp2;
+            }
+        }
 
         return ans;
     }

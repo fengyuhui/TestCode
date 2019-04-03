@@ -1,5 +1,8 @@
 package medium;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Array_Medium_notComplete {
     public static void main(String[] args){
         Array_Medium_notComplete main = new Array_Medium_notComplete();
@@ -114,5 +117,32 @@ public class Array_Medium_notComplete {
 
     }
 
+    //454. 四数相加 II   主要是用到map来判断有多少对
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        int ans = 0;
+        Map map = new HashMap<Integer,Integer>();
+        for(int i = 0; i<A.length; i++){
+            for(int j = 0; j<B.length; j++){
+                int temp = A[i]+B[j];
+                if(map.containsKey(temp)){
+                   map.put(temp, (Integer)map.get(temp)+1) ;
+                }else{
+                    map.put(temp, 1);
+                }
+            }
+        }
+
+        for(int i = 0; i<C.length; i++){
+            for(int j = 0; j<D.length; j++){
+                int temp = C[i]+D[j];
+                if(map.containsKey(0-temp)){
+                    ans +=(Integer)map.get(0-temp);
+                }
+            }
+        }
+
+        return ans;
+
+    }
 
 }

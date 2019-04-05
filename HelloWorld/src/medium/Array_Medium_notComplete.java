@@ -1,7 +1,6 @@
 package medium;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Array_Medium_notComplete {
     public static void main(String[] args){
@@ -12,6 +11,10 @@ public class Array_Medium_notComplete {
         int[] sor = {0,6,1,2,7,9,3,4,5,10,8};
         main.quickSort(sor);
         System.out.println(sor);
+
+        int[] A = {5621,1743,5532,3549,9581};
+        int[] B = {13,9787,4121,5039,1481};
+        main.advantageCount(A, B);
 
     }
 
@@ -143,6 +146,39 @@ public class Array_Medium_notComplete {
 
         return ans;
 
+    }
+
+    //870. 优势洗牌
+    public int[] advantageCount(int[] A, int[] B) {
+        Arrays.sort(A);
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i = 0; i<A.length; i++){
+            list.add(A[i]);
+        }
+        int[] ans= new int[A.length];
+
+        boolean isFound = false;
+
+        for(int i = 0; i<B.length; i++){
+            int temp = B[i];
+            isFound = false;
+            Iterator iterator = list.iterator();
+            while(iterator.hasNext()){
+                int a = (Integer)iterator.next();
+                if(temp<a){
+                    ans[i] = a;
+                    iterator.remove();
+                    isFound = true;
+                    break;
+                }
+            }
+            if(!isFound){
+                Iterator iterator1 = list.iterator();
+                ans[i] = (Integer)iterator1.next();
+                iterator1.remove();
+            }
+        }
+        return ans;
     }
 
 }

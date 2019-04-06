@@ -150,7 +150,7 @@ public class Test3 {
             return;
         }
         //初始化
-        //从i走到第j个怪兽共耗费多少金币
+        //从i走到第j个怪兽最多耗费多少金币
         int dp[][] = new int[n][n];
         dp[0][1] =money[0];
         for(int i = 0; i<n; i++){

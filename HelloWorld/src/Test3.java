@@ -3,14 +3,22 @@ import java.util.*;
 public class Test3 {
     public static void main(String[] args) {
         Test3 main = new Test3();
-        main.method1();
+        //main.method1();
 
         Scanner in = new Scanner(System.in);
         int n = in.nextInt();
         in.nextLine();
         String s = in.nextLine();
 
-        if(!s.contains("01") && !s.contains("10") ){
+        //StringBuffer stringBuffer = new StringBuffer(s);
+        while(s.contains("01") || s.contains("10")){
+            s=s.replaceAll("01", "");
+            s=s.replaceAll("10", "");
+        }
+        int ans = s.length();
+        System.out.println(ans);
+
+       /* if(!s.contains("01") && !s.contains("10") ){
             System.out.println(n);
             return;
         }
@@ -45,7 +53,7 @@ public class Test3 {
                 r++;
             }
         }
-        System.out.println(size);
+        System.out.println(size);*/
 
     }
 

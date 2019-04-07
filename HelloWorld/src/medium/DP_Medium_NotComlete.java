@@ -224,4 +224,31 @@ class Node {
         ans = dp[row][col];
         return ans;
     }
+
+    //650. 只有两个键的键盘
+    //n>1时 其实就是将n分解为m个数字的乘积 且m个数字的和最小 即把一个数分解为n个质数的和 从小到大的去试探
+   /* 如果这个数是质数 则这个数只能一个一个的复制得到 操作步数就是这个数本身 如果不是质数 则可以由复制之前得到
+    例如20可以由10复制得到 10可以由5复制得到 而5是质数 只能一个一个复制 所以minStep （20） = 9，相当于是求公因数。
+    比如20的公因数就是2 2 5，相加即为9*/
+    //可以用DP，这里用的就是DP
+    public int minSteps(int n) {
+        int ans = 0;
+        int[] dp = new int[n+1];
+        dp[1] = 0;
+        for(int i = 2; i<=n; i++){
+            //最多的方法：从1开始依次copy，所以dp[i]最大为i
+            dp[i] = i;
+            for(int j = 2; j<i; j++){
+                if(i % j == 0){
+                    //i-j的意思是现在已经有j了，所以要减去，需要再粘贴（i-j）/j
+                    //个j，然后+1是加上copyAll的这一次
+                    dp[i] = Integer.min(dp[i], dp[j]+(i-j) / j +1);
+                }
+            }
+        }
+        ans = dp[n];
+        return ans;
+    }
+
+
 }

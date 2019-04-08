@@ -1,9 +1,18 @@
 package medium;
 
+import java.util.*;
+
 public class DFS_Medium_notComplete {
     public static void main(String args[]){
         DFS_Medium_notComplete main = new DFS_Medium_notComplete();
         System.out.println(main.isAdditiveNumber("199111992"));
+        char[][] board = {{'C','A','A'},{'A','A','A'},{'B','C','D'}};
+        String word = "AAB";
+        System.out.println(main.exist(board, word));
+
+        String[][] tickets = {{"EZE","TIA"},{"EZE","HBA"},{"AXA","TIA"},{"JFK","AXA"},{"ANU","JFK"},{"ADL","ANU"},{"TIA","AUA"},{"ANU","AUA"},{"ADL","EZE"},{"ADL","EZE"},{"EZE","ADL"},{"AXA","EZE"},{"AUA","AXA"},{"JFK","AXA"},{"AXA","AUA"},{"AUA","ADL"},{"ANU","EZE"},{"TIA","ADL"},{"EZE","ANU"},{"AUA","ANU"}};
+
+        System.out.println(main.findItinerary(tickets));
     }
 
     //306. 累加数
@@ -103,5 +112,99 @@ public class DFS_Medium_notComplete {
             ans = sgn+ans;
         }
         return ans;
+    }
+
+    //79. 单词搜索
+    public boolean exist(char[][] board, String word) {
+        boolean ans = false;
+        int size = word.length();
+        int row = board.length;
+        int col = board[0].length;
+        int [][] visited = new int[row][col];//判断是否已经访问过
+        if(size==0)
+            return true;
+        for(int i = 0; i<row; i++){
+            for(int j = 0; j<col; j++){
+                if(dfsSearch(0, word,board,visited,i,j))
+                    return true;
+            }
+        }
+        return ans;
+    }
+
+    public boolean dfsSearch(int index, String word, char[][] board, int[][] visited, int row, int col){
+        if(row<0 || col<0 || row>=board.length || col>=board[0].length || board[row][col] != word.charAt(index))
+            return false;
+        if(visited[row][col] == 0) {
+            visited[row][col] = 1;
+            index++;
+            if (index == word.length())
+                return true;
+
+            if (dfsSearch(index, word, board, visited, row + 1, col) ||
+                    dfsSearch(index, word, board, visited, row - 1, col) ||
+                    dfsSearch(index, word, board, visited, row, col + 1) ||
+                    dfsSearch(index, word, board, visited, row, col - 1))
+                return true;
+            visited[row][col] = 0;
+        }
+        return false;
+    }
+
+    //332. 重新安排行程
+    public List<String> findItinerary(String[][] tickets) {
+        List<String> ans = new ArrayList<>();
+        //PS 每次矩阵都可以用for(str[]: strs)来循环，非常方便
+        //建图！！！！
+        Map<String,ArrayList> map = new HashMap<>();
+        for(String[] ticket: tickets){
+            if(!map.containsKey(ticket[0]))
+                map.put(ticket[0], new ArrayList());
+            map.get(ticket[0]).add(ticket[1]);
+        }
+
+        //遍历map，对路线进行字符自然排序
+        for(String key:map.keySet()){
+            //Collections和Arrays的sort方法都是升序排序
+            Collections.sort(map.get(key));
+        }
+
+        //因为这是个有向图，所以当所有路线的城市节点都加进ans后（即结束遍历的条件），ans的节点数会=tickets.length+1，因为tickets是边
+        HashSet<String> set = new HashSet<>();
+        int len = tickets.length;
+        dfsRoute(ans, map, len, set, "JFK", "");
+        return ans;
+    }
+
+    public boolean dfsRoute(List<String> ans, Map<String, ArrayList> map, int len, HashSet<String> set, String currentPlace, String ticketNo){
+        //先存下当前站的节点
+        ans.add(currentPlace);
+        //遍历结束条件
+        if(ans.size() == len+1)
+            return true;
+        //如果这个站不是终点且没有票可以离开此站
+        if(!map.containsKey(currentPlace)){
+            int s = ans.size();
+            ans.remove(s-1);//回溯，从路线中删除这个站
+            set.remove(ticketNo);//回溯，将之前的票变为未使用状态。每条航线只有一张票(一笔画。站点可以重复去，但是航线不能重复)
+            return false;
+        }
+
+        //遍历当前站点的所有目的地
+        String dist = "";
+        for(int i = 0; i<map.get(currentPlace).size(); i++){
+            dist = (String)map.get(currentPlace).get(i);
+            //如果票没有使用过
+            if(!set.contains(currentPlace+"@"+i)){
+                set.add(currentPlace+"@"+i);
+                if(dfsRoute(ans, map, len, set, dist, currentPlace+"@"+i)){
+                    return true;
+                }
+            }
+        }
+        int s = ans.size();
+        ans.remove(s-1);//回溯，从路线中删除这个站
+        set.remove(ticketNo);//回溯，将之前的票变为未使用状态。
+        return false;
     }
 }

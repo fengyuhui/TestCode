@@ -5,14 +5,17 @@ import java.util.*;
 public class DFS_Medium_notComplete {
     public static void main(String args[]){
         DFS_Medium_notComplete main = new DFS_Medium_notComplete();
-        System.out.println(main.isAdditiveNumber("199111992"));
+        //System.out.println(main.isAdditiveNumber("199111992"));
         char[][] board = {{'C','A','A'},{'A','A','A'},{'B','C','D'}};
         String word = "AAB";
-        System.out.println(main.exist(board, word));
+        //System.out.println(main.exist(board, word));
 
         String[][] tickets = {{"EZE","TIA"},{"EZE","HBA"},{"AXA","TIA"},{"JFK","AXA"},{"ANU","JFK"},{"ADL","ANU"},{"TIA","AUA"},{"ANU","AUA"},{"ADL","EZE"},{"ADL","EZE"},{"EZE","ADL"},{"AXA","EZE"},{"AUA","AXA"},{"JFK","AXA"},{"AXA","AUA"},{"AUA","ADL"},{"ANU","EZE"},{"TIA","ADL"},{"EZE","ANU"},{"AUA","ANU"}};
 
-        System.out.println(main.findItinerary(tickets));
+        //System.out.println(main.findItinerary(tickets));
+
+        int[][] grid = {{0,1}};
+        System.out.println(main.maxAreaOfIsland(grid));
     }
 
     //306. 累加数
@@ -207,4 +210,66 @@ public class DFS_Medium_notComplete {
         set.remove(ticketNo);//回溯，将之前的票变为未使用状态。
         return false;
     }
+
+    //695. 岛屿的最大面积
+    public int maxAreaOfIsland(int[][] grid) {
+        int ans = 0;
+        int row = grid.length;
+        int col = grid[0].length;
+        int[][] visited = new int[row][col];
+
+        int temp = 0;
+        for(int i = 0; i<row; i++){
+            for(int j = 0; j<col; j++){
+                temp = dfsArea(row,col,grid, i, j, visited);
+                ans = ans>temp?ans:temp;
+            }
+        }
+        return ans;
+    }
+
+    public int dfsArea(int row, int col, int[][] grid, int i, int j,  int[][] visited){
+        int ans = 0;
+        if(i>=row || j>=col || i< 0 || j<0 || grid[i][j] == 0)
+            return 0;
+        if(visited[i][j] == 1)
+            return 0;
+        visited[i][j] = 1;
+        ans = 1 +dfsArea(row, col, grid, i, j+1,visited)
+        +dfsArea(row, col, grid, i+1, j, visited)
+        +dfsArea(row, col, grid, i-1, j,visited)
+        +dfsArea(row, col, grid, i, j-1, visited);
+        return ans;
+    }
+
+    //529. 扫雷游戏
+    public char[][] updateBoard(char[][] board, int[] click) {
+        int i = click[0], j = click[1];
+        int row = board.length;
+        int col = board[0].length;
+        int count = 0;
+        if(board[i][j] == 'M')
+            board[i][j] = 'X';
+        else  if(board[i][j] == 'E'){
+            count = dfsBoard(board, i, j);
+            board[i][j] = (char)count;
+        }
+        return board;
+    }
+
+    public int dfsBoard(char[][] board, int x, int y){
+        //八个相邻格子
+        int count = 0;
+        int[][] surrounder = {{0,1}, {0,-1}, {1,0}, {-1, 0}, {1,1}, {1,-1}, {-1,1}, {-1,-1}};
+        for(int[] s:surrounder){
+            if(x+s[0]>=board.length || y+s[1]>=board[0].length || x+s[0]<0 || y+s[1]<0){
+                return 0;
+            }
+            count = dfsBoard(board, x+s[0], y+s[1]);
+            board[x+s[0]][y+s[1]] = (char)count;
+        }
+        return 0;
+    }
+
+
 }

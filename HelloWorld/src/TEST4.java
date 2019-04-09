@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class TEST4 {
     public static void main(String[] args) {
-/*        Scanner in = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
         String s = in.nextLine();
         String[] str = s.split(",");
         HashMap<String, Integer> map = new HashMap<>();
@@ -18,7 +18,7 @@ public class TEST4 {
                 map.put(str[i], 1);
             }
         }
-        System.out.println("false");*/
+        System.out.println("false");
 
         TEST4 main = new TEST4();
         main.method2();

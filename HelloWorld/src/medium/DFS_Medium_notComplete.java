@@ -6,7 +6,7 @@ public class DFS_Medium_notComplete {
     public static void main(String args[]){
         DFS_Medium_notComplete main = new DFS_Medium_notComplete();
         //System.out.println(main.isAdditiveNumber("199111992"));
-        char[][] board = {{'C','A','A'},{'A','A','A'},{'B','C','D'}};
+        //char[][] board = {{'C','A','A'},{'A','A','A'},{'B','C','D'}};
         String word = "AAB";
         //System.out.println(main.exist(board, word));
 
@@ -15,7 +15,10 @@ public class DFS_Medium_notComplete {
         //System.out.println(main.findItinerary(tickets));
 
         int[][] grid = {{0,1}};
-        System.out.println(main.maxAreaOfIsland(grid));
+        //System.out.println(main.maxAreaOfIsland(grid));
+        char[][] board = {{'E','E','E','E','E'},{'E','E','M','E','E'},{'E','E','E','E','E'},{'E','E','E','E','E'}};
+        int click[] ={3,0};
+        main.updateBoard(board, click);
     }
 
     //306. 累加数
@@ -247,28 +250,45 @@ public class DFS_Medium_notComplete {
         int i = click[0], j = click[1];
         int row = board.length;
         int col = board[0].length;
+        boolean visited[][] = new boolean[row][col];
+
         int count = 0;
         if(board[i][j] == 'M')
             board[i][j] = 'X';
         else  if(board[i][j] == 'E'){
-            count = dfsBoard(board, i, j);
-            board[i][j] = (char)count;
+            board = dfsBoard(board, i, j, visited);
         }
         return board;
     }
 
-    public int dfsBoard(char[][] board, int x, int y){
+    public char[][] dfsBoard(char[][] board, int x, int y, boolean[][] visited){
         //八个相邻格子
         int count = 0;
+        if(visited[x][y]){
+            return board;
+        }
+        visited[x][y] = true;
         int[][] surrounder = {{0,1}, {0,-1}, {1,0}, {-1, 0}, {1,1}, {1,-1}, {-1,1}, {-1,-1}};
+        if(board[x][y] == 'M') {
+            board[x][y] = 'X';
+            return board;
+        }
         for(int[] s:surrounder){
             if(x+s[0]>=board.length || y+s[1]>=board[0].length || x+s[0]<0 || y+s[1]<0){
-                return 0;
+                return board;
+            }else{
+                board = dfsBoard(board, x+s[0], y+s[1], visited);
+                if(board[x+s[0]][ y+s[1]] == 'M'){
+                    count++;
+                }
             }
-            count = dfsBoard(board, x+s[0], y+s[1]);
-            board[x+s[0]][y+s[1]] = (char)count;
         }
-        return 0;
+        if(count!=0) {
+            board[x][y] = (char) count;
+        }else{
+            board[x][y] = 'B';
+        }
+        return board;
     }
 
 

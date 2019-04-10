@@ -6,7 +6,12 @@ public class DP_Medium_NotComlete {
     public static void main(String[] args){
         DP_Medium_NotComlete main = new DP_Medium_NotComlete();
         int[] a = {10,9,2,5,3,7,101,18};
-        main.lengthOfLIS(a);
+        //main.lengthOfLIS(a);
+        String s = "leetcode";
+        List list = new ArrayList();
+        list.add("leet");
+        list.add("code");
+        main.wordBreak(s,list);
     }
 
     //5. 最长回文子串，不能将s reverse 再求最长子序列！！应该是reverse 之后求最长子串，且字串的原始下标一致！！比如abcdghcba,abc并不是它的最长回文子串
@@ -247,6 +252,23 @@ class Node {
             }
         }
         ans = dp[n];
+        return ans;
+    }
+
+    //139. 单词拆分
+    public boolean wordBreak(String s, List<String> wordDict) {
+        boolean ans;
+        //dp[i]表示以i-1为下标的字符为结尾的前i个字符是否能在其中找到
+        boolean[] dp = new boolean[s.length()+1];
+        dp[0] = true;//boolean数组的默认值是false
+        for(int i = 1; i<=s.length(); i++){
+            for(int j = 0; j<i; j++){
+                if(dp[j] && wordDict.contains(s.substring(j, i))){//因为s.substring(i,j)是个蛇精病= =
+                    dp[i] = true;
+                }
+            }
+        }
+        ans = dp[s.length()];
         return ans;
     }
 

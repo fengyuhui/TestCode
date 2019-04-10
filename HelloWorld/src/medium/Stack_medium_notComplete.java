@@ -16,9 +16,13 @@ public class Stack_medium_notComplete {
         //nextGreaterElements(a);
 
         ////856. 括号的分数
-        scoreOfParentheses("(()(()))");
+        //scoreOfParentheses("(()(()))");
 
     //栈的中等tag}
+
+        Stack_medium_notComplete main = new Stack_medium_notComplete();
+        int[] a = {-2,1,-1,-2};
+        main.asteroidCollision(a);
 
      }
 
@@ -415,5 +419,79 @@ public class Stack_medium_notComplete {
             result = Integer.parseInt(stack.pop());
         }
         return result;
+    }
+
+    //行星碰撞
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stack = new Stack<>();
+        boolean isleft = false;
+        for(int asteroid: asteroids){
+            if(stack.empty()){
+                stack.push(asteroid);
+                if(asteroid<0){
+                    isleft = true;
+                }else{
+                    isleft = false;
+                }
+            }else{
+                if(asteroid<0){
+                    if(isleft){
+                        stack.push(asteroid);
+                    }else{
+                        if(Math.abs(asteroid)>Math.abs(stack.peek())){
+                            stack.pop();
+                            while(!stack.empty()){
+                                if(stack.peek()<0){
+                                    isleft = true;
+                                }else
+                                    isleft = false;
+                                if(!isleft) {
+                                    if (Math.abs(asteroid) > Math.abs(stack.peek())) {
+                                        stack.pop();
+                                    } else if (Math.abs(asteroid) == Math.abs(stack.peek())) {
+                                        stack.pop();
+                                        asteroid = 0;
+                                        break;
+                                    } else
+                                        break;
+                                }
+                                if(isleft && asteroid!=0){
+                                    stack.push(asteroid);
+                                    break;
+                                }
+                            }
+                            if(stack.empty() && asteroid!=0){
+                                stack.push(asteroid);
+                                isleft = false;
+                            }
+                        }else if(Math.abs(asteroid) == Math.abs(stack.peek())){
+                            stack.pop();
+                        }
+                    }
+                }else if(asteroid>0){
+                    if(isleft){
+                        stack.push(asteroid);
+                        isleft = false;
+                    }else{
+                        stack.push(asteroid);
+                    }
+
+                }
+            }
+            if(!stack.empty()) {
+                if (stack.peek() < 0) {
+                    isleft = true;
+                } else
+                    isleft = false;
+            }
+        }
+        int size = stack.size();
+        int[] ans = new int[size];
+        int i = size-1;
+        while(!stack.empty()){
+            ans[i] = stack.pop();
+            i--;
+        }
+        return ans;
     }
 }

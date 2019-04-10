@@ -7,6 +7,12 @@ public class DFS_Medium_notComplete {
         DFS_Medium_notComplete main = new DFS_Medium_notComplete();
         //System.out.println(main.isAdditiveNumber("199111992"));
         //char[][] board = {{'C','A','A'},{'A','A','A'},{'B','C','D'}};
+        int[] a = {3,5,2};
+        Arrays.sort(a);
+        ArrayList<Integer> c = new ArrayList<>();
+        c.add(1);c.add(5);c.add(4);
+        Collections.sort(c);
+
         String word = "AAB";
         //System.out.println(main.exist(board, word));
 

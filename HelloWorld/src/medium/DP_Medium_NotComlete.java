@@ -2,6 +2,22 @@ package medium;
 
 import java.util.*;
 
+class Node2 {
+    public int val;
+    public Node2 prev;
+    public Node2 next;
+    public Node2 child;
+
+    public Node2() {}
+
+    public Node2(int _val,Node2 _prev,Node2 _next,Node2 _child) {
+        val = _val;
+        prev = _prev;
+        next = _next;
+        child = _child;
+    }
+}
+
 public class DP_Medium_NotComlete {
     public static void main(String[] args){
         DP_Medium_NotComlete main = new DP_Medium_NotComlete();
@@ -271,6 +287,68 @@ class Node {
         ans = dp[s.length()];
         return ans;
     }
+
+    //98. 验证二叉搜索树
+    int last =Integer.MIN_VALUE;
+    public boolean isValidBST(TreeNode root) {
+        Integer max = null;
+        Integer min = null;
+        if(root == null)
+            return true;
+        return ds(root, min, max);
+
+    }
+    public boolean ds(TreeNode root,Integer min, Integer max){
+        if(root == null ){
+            return true;
+        }
+        if(min != null && min >= root.val){
+            return false;
+        }
+        if(max != null && max <= root.val ){
+            return false;
+        }
+        return ds(root.left, min, root.val) && ds(root.right, root.val, max);
+    }
+
+    //430. 扁平化多级双向链表
+    public Node2 flatten(Node2 head) {
+        if(head == null){
+            return head;
+        }
+        dfsFlattenHelper(head);
+        return head;
+    }
+
+    public Node2 dfsFlattenHelper(Node2 head){
+        Node2 pt = head;
+        Node2 tail;
+        while(pt!=null){
+            if(pt.child!=null) {
+                tail = dfsFlattenHelper(pt.child);
+                if(pt.next!=null) {
+                    pt.next.prev = tail;
+                    tail.next = pt.next;
+                    pt.next = pt.child;
+                    pt.child.prev = pt;
+                    pt.child = null;
+                    pt = tail;
+                }else{
+                    pt.next = pt.child;
+                    pt.child.prev = pt;
+                    pt.child = null;
+                    pt = pt.next;
+                }
+            }else if(pt.next!=null){
+                pt = pt.next;
+            }else
+                break;
+        }
+        return pt;
+    }
+
+
+    
 
 
 }

@@ -288,7 +288,7 @@ class Node {
         return ans;
     }
 
-    //98. 验证二叉搜索树
+    //98. 验证二叉搜索树 dfs
     int last =Integer.MIN_VALUE;
     public boolean isValidBST(TreeNode root) {
         Integer max = null;
@@ -311,7 +311,7 @@ class Node {
         return ds(root.left, min, root.val) && ds(root.right, root.val, max);
     }
 
-    //430. 扁平化多级双向链表
+    //430. 扁平化多级双向链表 dfs
     public Node2 flatten(Node2 head) {
         if(head == null){
             return head;
@@ -348,7 +348,27 @@ class Node {
     }
 
 
-    
+    //375. 猜数字大小 II
+    public int getMoneyAmount(int n) {
+        int ans = 0;
+        //dp[i][j]表示从数字i到j之间猜中任意一个数字最少需要花费的钱数
+        int[][] dp = new int[n+1][n+1];
+        for(int i = 2; i<n+1; i++){
+            for(int j = i-1; j>=0; j--){
+
+                int localMax = Integer.MAX_VALUE;
+                if(j == i-1){
+                    dp[i][j] = j;
+                    continue;
+                }
+                for(int k = j+1; k<i; k++){
+
+                }
+            }
+        }
+        return ans;
+    }
+
 
 
 }

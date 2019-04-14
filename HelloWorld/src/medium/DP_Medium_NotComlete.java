@@ -21,6 +21,8 @@ class Node2 {
 public class DP_Medium_NotComlete {
     public static void main(String[] args){
         DP_Medium_NotComlete main = new DP_Medium_NotComlete();
+        int p[][] = {{1,0}};
+        main.canFinish(2,p);
         int[] a = {10,9,2,5,3,7,101,18};
         //main.lengthOfLIS(a);
         String s = "leetcode";
@@ -394,8 +396,44 @@ class Node {
             }
             dp[i] = count;
         }
-
         ans = dp[n];
         return ans;
+    }
+
+
+    //207. 课程表
+    //拓扑排序
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int count = 0;
+        if(numCourses == 0)
+            return true;
+        //先把所有课程的入度初始化好
+        int[] inDegree = new int[numCourses];
+        for(int[] prerequisite: prerequisites){
+            inDegree[prerequisite[1]]++;
+        }
+        //把入度为0的结点入栈
+        Stack stack = new Stack();
+        for(int i = 0; i<numCourses; i++){
+            if(inDegree[i]==0)
+                stack.push(i);
+        }
+
+        //依次把入度为0的结点加入课程表，课程数+1
+        while(!stack.empty()){
+            int course = (int)stack.pop();
+            count++;
+            //依次将该结点对应的头结点的出度-1
+            for(int[] prerequisite: prerequisites){
+                if(prerequisite[0] == course){
+                    inDegree[prerequisite[1]] -- ;
+                    //如果该头结点的入度为0，则将之加入栈
+                    if(inDegree[prerequisite[1]] == 0)
+                        stack.push(prerequisite[1]);
+                }
+            }
+        }
+
+        return count==numCourses;
     }
 }

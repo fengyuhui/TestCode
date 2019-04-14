@@ -297,5 +297,57 @@ public class DFS_Medium_notComplete {
         return board;
     }
 
+    //547. 朋友圈
+    //典型dfs
+    public int findCircleNum(int[][] M) {
+        int ans = 0;
+        if(M.length == 0)
+            return 0;
+        boolean [] visited = new boolean[M.length];
+
+        for(int i = 0; i<M.length; i++){
+            if(!visited[i]){
+                dfsCircle(visited, M, i);
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    public void dfsCircle(boolean[] visited, int[][] M, int i){
+        for(int j = 0; j<M.length; j++){
+            if(M[i][j] == 1 && !visited[j]){
+                visited[j] = true;
+                dfsCircle(visited,M,j);
+            }
+        }
+    }
+
+    //200. 岛屿的个数，经典dfs
+    public int numIslands(char[][] grid) {
+        int ans = 0;
+        for(int i = 0; i<grid.length; i++){
+            for(int j = 0; j<grid[0].length; j++){
+                if(grid[i][j] == '1'){
+                    ans++;
+                    dfsIslands(grid, i, j);
+                }
+            }
+        }
+
+        return ans;
+    }
+    public void dfsIslands(char[][] grid, int i, int j){
+        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length)
+            return;
+        if(grid[i][j] == '1'){
+            grid[i][j] = '0';
+            dfsIslands(grid, i+1, j);
+            dfsIslands(grid, i-1, j);
+            dfsIslands(grid, i, j+1);
+            dfsIslands(grid, i, j-1);
+        }
+    }
+
 
 }

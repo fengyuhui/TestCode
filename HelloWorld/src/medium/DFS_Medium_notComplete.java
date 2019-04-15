@@ -273,29 +273,37 @@ public class DFS_Medium_notComplete {
         if(visited[x][y]){
             return board;
         }
+
         visited[x][y] = true;
-        int[][] surrounder = {{0,1}, {0,-1}, {1,0}, {-1, 0}, {1,1}, {1,-1}, {-1,1}, {-1,-1}};
-        if(board[x][y] == 'M') {
+        if(board[x][y] == 'M'){
             board[x][y] = 'X';
             return board;
         }
+        int[][] surrounder = {{0,1}, {0,-1}, {1,0}, {-1, 0}, {1,1}, {1,-1}, {-1,1}, {-1,-1}};
         for(int[] s:surrounder){
             if(x+s[0]>=board.length || y+s[1]>=board[0].length || x+s[0]<0 || y+s[1]<0){
-                return board;
+                continue;
             }else{
-                board = dfsBoard(board, x+s[0], y+s[1], visited);
                 if(board[x+s[0]][ y+s[1]] == 'M'){
                     count++;
                 }
             }
         }
         if(count!=0) {
-            board[x][y] = (char) count;
+            board[x][y] = String.valueOf(count).charAt(0);
         }else{
             board[x][y] = 'B';
+            for(int[] s:surrounder){
+                if(x+s[0]>=board.length || y+s[1]>=board[0].length || x+s[0]<0 || y+s[1]<0){
+                    continue;
+                }else{
+                    dfsBoard(board, x+s[0], y+s[1], visited);
+                }
+            }
         }
         return board;
     }
+
 
     //547. 朋友圈
     //典型dfs

@@ -68,4 +68,45 @@ public class BFS_Medium_notComplete {
 
     //909. 蛇梯棋
 
+    
+    //310. 最小高度树
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        List<Integer> ans = new ArrayList<>();
+
+        return ans;
+    }
+
+
+
+    //934. 最短的桥
+    public int shortestBridge(int[][] A) {
+        int ans = 0;
+        return ans;
+    }
+
+
+    //102. 二叉树的层次遍历
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if(root == null)
+            return ans;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int count = queue.size();
+            List tempList = new ArrayList();
+            while(count!=0){
+                TreeNode temp = queue.poll();
+                tempList.add(temp.val);
+                if(temp.left!=null)
+                    queue.add(temp.left);
+                if(temp.right!=null)
+                    queue.add(temp.right);
+                count--;
+            }
+            ans.add(tempList);
+        }
+        return ans;
+    }
+
 }

@@ -8,7 +8,10 @@ public class BFS_Medium_notComplete {
         int[][] p = {{1, 0}, {1, 2}, {1, 3}};
         //main.findMinHeightTrees(4,p);
         int times[][] = {{1,3,68},{1,4,20},{4,1,65},{3,2,74},{2,1,44},{3,4,61},{4,3,68},{3,1,26},{5,1,60},{5,3,3},{4,5,5},{2,5,36},{2,3,94},{1,2,0},{3,5,90},{2,4,28},{4,2,12},{5,4,52},{5,2,85},{1,5,42}};
-        main.networkDelayTime(times, 5,4);
+        //main.networkDelayTime(times, 5,4);
+
+        int p1[][] = {{1,0},{0,1}};
+        main.findOrder(2,p1);
 
 
     }
@@ -226,5 +229,156 @@ public class BFS_Medium_notComplete {
         }
         return index;
     }
+
+    //513. 找树左下角的值
+    public int findBottomLeftValue(TreeNode root) {
+        int ans = 0;
+        if(root == null)
+            return 0;
+        Map<Integer, ArrayList> map = new HashMap<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int h = 0;
+        while(!queue.isEmpty()){
+            int count = queue.size();
+            h++;
+            ArrayList temp = new ArrayList();
+            map.put(h,temp);
+            while(count!=0){
+                TreeNode head = queue.poll();
+                temp.add(head);
+                count--;
+                if(head.left!=null)
+                    queue.offer(head.left);
+                if(head.right!=null)
+                    queue.offer(head.right);
+            }
+        }
+        TreeNode last = (TreeNode)(map.get(h).get(0));
+        ans = last.val;
+        return ans;
+    }
+
+
+    //207. 课程表
+    //拓扑排序 其实这是个BFS
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int count = 0;
+        if(numCourses == 0)
+            return true;
+        //先把所有课程的入度初始化好
+        int[] inDegree = new int[numCourses];
+        for(int[] prerequisite: prerequisites){
+            inDegree[prerequisite[1]]++;
+        }
+        //把入度为0的结点入栈
+        Stack stack = new Stack();
+        for(int i = 0; i<numCourses; i++){
+            if(inDegree[i]==0)
+                stack.push(i);
+        }
+
+        //依次把入度为0的结点加入课程表，课程数+1
+        while(!stack.empty()){
+            int course = (int)stack.pop();
+            count++;
+            //依次将该结点对应的头结点的出度-1
+            for(int[] prerequisite: prerequisites){
+                if(prerequisite[0] == course){
+                    inDegree[prerequisite[1]] -- ;
+                    //如果该头结点的入度为0，则将之加入栈
+                    if(inDegree[prerequisite[1]] == 0)
+                        stack.push(prerequisite[1]);
+                }
+            }
+        }
+
+        return count==numCourses;
+    }
+
+    //210. 课程表 II
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] ans = new int[numCourses];
+        if(numCourses == 1) {
+            ans[0] = 0;
+            return ans;
+        }
+
+        Stack stack = new Stack();
+
+        //初始化入度数组, inDgreee[i]代表i课程需要依赖多少门课
+        int[] inDegree = new int[numCourses];
+        for(int i = 0; i<numCourses; i++) {
+            for (int[] prerequisite : prerequisites) {
+                if (prerequisite[0] == i){
+                    inDegree[i]++;
+                }
+            }
+        }
+
+        //把入度为0的课程加入栈
+        for(int i = 0; i<numCourses; i++){
+            if(inDegree[i] == 0)
+                stack.push(i);
+        }
+
+        //将依赖入度为0的课程的入度-1，如果-1后入度变为0，则加入栈
+        int count = 0;
+        while(!stack.isEmpty()){
+            int course = (int)stack.pop();
+            ans[count] = course;
+            count++;
+            for (int[] prerequisite : prerequisites) {
+                if (prerequisite[1] == course){
+                    inDegree[prerequisite[0]]--;
+                    if(inDegree[prerequisite[0]] == 0)
+                        stack.push(prerequisite[0]);
+                }
+            }
+        }
+        int[] notFound = {};
+        if(count == numCourses)
+            return ans;
+        else
+            return notFound;
+    }
+
+    //199. 二叉树的右视图，就是求每一层的最右节点
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        Map<Integer, ArrayList> map = new HashMap<>();
+        if(root == null)
+            return ans;
+        queue.offer(root);
+        int h = 0;
+        while(!queue.isEmpty()){
+            int count = queue.size();
+            ArrayList<TreeNode> list = new ArrayList<>();
+            map.put(h, list);
+            h++;
+            while(count!=0){
+                TreeNode temp = queue.poll();
+                list.add(temp);
+                count--;
+                if(temp.left!=null)
+                    queue.add(temp.left);
+                if(temp.right!=null)
+                    queue.add(temp.right);
+            }
+        }
+        ArrayList list2;
+        for(int i = 0; i<h; i++){
+            list2 = map.get(i);
+            int size = list2.size();
+            TreeNode last = (TreeNode)list2.get(size-1);
+            ans.add(last.val);
+        }
+        return ans;
+    }
+
+
+
 
 }

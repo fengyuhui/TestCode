@@ -7,8 +7,8 @@ public class BFS_Medium_notComplete {
         BFS_Medium_notComplete main = new BFS_Medium_notComplete();
         int[][] p = {{1, 0}, {1, 2}, {1, 3}};
         //main.findMinHeightTrees(4,p);
-        int times[][] = {{2,1,1},{2,3,1},{3,4,1}};
-        main.networkDelayTime(times, 4,2);
+        int times[][] = {{1,3,68},{1,4,20},{4,1,65},{3,2,74},{2,1,44},{3,4,61},{4,3,68},{3,1,26},{5,1,60},{5,3,3},{4,5,5},{2,5,36},{2,3,94},{1,2,0},{3,5,90},{2,4,28},{4,2,12},{5,4,52},{5,2,85},{1,5,42}};
+        main.networkDelayTime(times, 5,4);
 
 
     }
@@ -179,8 +179,8 @@ public class BFS_Medium_notComplete {
         //waste[i][j]代表节点i到节点j的直接时间
         int[][] waste = new int[N+1][N+1];
         //初始化waste
-        for(int i = 1; i<=N; i++){
-            for(int j = 1; j<=N; j++){
+        for(int i = 0; i<=N; i++){
+            for(int j = 0; j<=N; j++){
                 if(i!=j)
                     waste[i][j] = 1000000;
             }
@@ -195,13 +195,13 @@ public class BFS_Medium_notComplete {
 
         while(true){
             int index = findMinNext(visited, N, value);
+            for(int i = 1; i<=N; i++){
+                if(value[i]>value[index]+waste[index][i])
+                    value[i] = value[index]+waste[index][i];
+            }
             if(value[index] == value[0])
                 break;
             visited.add(index);
-            for(int i = 1; i<=N; i++){
-                if(value[index]>value[i]+waste[i][index])
-                    value[index] = value[i]+waste[i][index];
-            }
         }
 
         int max = 0;
@@ -214,12 +214,12 @@ public class BFS_Medium_notComplete {
         return -1;
     }
     public int findMinNext(Set<Integer> visited,int N, int[] value){
-        int index = 1;
+        int index = 0;
         int min = value[0];
         for(int i = 1; i<=N; i++){
             if(visited.contains(i))
                 continue;
-            if(min>value[i]) {
+            if(min>=value[i]) {
                 min = value[i];
                 index = i;
             }

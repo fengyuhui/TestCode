@@ -357,5 +357,56 @@ public class DFS_Medium_notComplete {
         }
     }
 
+    //113. 路径总和 II 回溯法
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> list = new ArrayList<>();
+        List<Integer> li = new ArrayList<>();
+        if(root==null) return list;
+        dfsPath(root,sum,list,li);
+        return list;
+    }
+    public void dfsPath(TreeNode root,int sum,List<List<Integer>> list,List<Integer> li){
+        li.add(root.val);
+        if(root.left!=null)
+            dfsPath(root.left,sum-root.val,list,li);
+        if(root.right!=null)
+            dfsPath(root.right,sum-root.val,list,li);
+        if(root.left==null && root.right==null){
+            if(sum==root.val)
+                list.add(new ArrayList<Integer>(li));
+        }
+        //每返回一次，删掉一个节点
+        li.remove(li.size()-1);
+    }
+
+    //129. 求根到叶子节点数字之和
+    public int sumNumbers(TreeNode root) {
+        int ans = 0;
+        List<List<Integer>> list = new ArrayList<>();
+        List<Integer> temp = new ArrayList<>();
+        if(root == null)
+            return 0;
+        dfsNumbers(root, list, temp);
+        for(List<Integer> a:list){
+            int all = 0;
+            for(int val:a){
+                all = all * 10 + val;
+            }
+            ans+=all;
+        }
+        return ans;
+    }
+
+    public void dfsNumbers(TreeNode root, List<List<Integer>> list, List<Integer> temp){
+        temp.add(root.val);
+        if(root.left!=null)
+            dfsNumbers(root.left, list, temp);
+        if(root.right!=null)
+            dfsNumbers(root.right, list, temp);
+        if(root.left == null && root.right == null)
+            //必须是new ArrayList<Integer>(temp)而不是直接add（temp)，这样就是放了引用而已，temp.remove会删掉一切
+            list.add(new ArrayList<Integer>(temp));
+        temp.remove(temp.size() - 1);
+    }
 
 }

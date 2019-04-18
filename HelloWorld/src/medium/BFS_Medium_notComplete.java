@@ -11,7 +11,10 @@ public class BFS_Medium_notComplete {
         //main.networkDelayTime(times, 5,4);
 
         int p1[][] = {{1,0},{0,1}};
-        main.findOrder(2,p1);
+        //main.findOrder(2,p1);
+
+        int color[][] = {{3,4,6},{3,6},{3,6},{0,1,2,5},{0,7,8},{3},{0,1,2,7},{4,6},{4},{}};
+        main.isBipartite(color);
 
 
     }
@@ -378,7 +381,62 @@ public class BFS_Medium_notComplete {
         return ans;
     }
 
+    //785. 判断二分图,就是上色问题，如果相邻节点颜色相同，就不是二分图
+    public boolean isBipartite(int[][] graph) {
+        //1为蓝色，2为红色，0为未上色
+        int[] color = new int[graph.length];
+        boolean[] visited = new boolean[graph.length];
+        Queue<Integer>queue = new LinkedList<>();
+        for(int i = 0; i<graph.length; i++){
+            if(color[i] == 0){
+                //给自己和相邻节点上色
+                color[i] = 1;
+                queue.add(i);
+                dfsColor(graph,color,queue,visited);
+            }
+        }
+
+        //验证是否有相邻颜色相同
+        for(int i = 0; i<graph.length; i++){
+            int temp = color[i];
+            int g[] = graph[i];
+            for(int next:g){
+                if(temp == 1){
+                    if(color[next] == 1)
+                        return false;
+                }
+                if(temp == 2){
+                    if(color[next] == 2)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean dfsColor(int[][] graph, int[] color, Queue<Integer> queue,boolean[] visited){
+        while(!queue.isEmpty()){
+            int temp = queue.poll();
+            visited[temp] = true;
+            int g[] = graph[temp];
+            int val = color[temp] == 1?2:1;
+            for(int next:g){
+                if(!visited[next]){
+                    color[next] = val;
+                    queue.add(next);
+                }
+            }
+        }
+        return true;
+    }
 
 
+    //863. 二叉树中所有距离为 K 的结点
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        List<Integer> ans = new ArrayList<>();
+
+        //建图
+
+        return ans;
+    }
 
 }

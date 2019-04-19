@@ -397,4 +397,55 @@ class Node {
         ans = dp[n];
         return ans;
     }
+
+
+    //198. 打家劫舍，这是easy版本的
+    public int rob(int[] nums) {
+        //dp[i]表示抢劫从0到i最大值，但是不一定会抢0和i
+        if(nums.length == 0)
+            return 0;
+        int[] dp = new int[nums.length];
+
+        if(nums.length == 1)
+            return nums[0];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        for(int i = 2; i<nums.length; i++){
+            dp[i] = Math.max(dp[i-1], dp[i-2]+nums[i]);
+        }
+        return dp[nums.length - 1];
+    }
+
+    //213. 打家劫舍 II
+    public int rob2(int[] nums) {
+        int ans = 0;
+
+        //可以分开弄两次，一次0到length-2，一次1到length-1
+        if(nums.length == 0)
+            return 0;
+        if(nums.length == 1)
+            return nums[0];
+        if(nums.length == 2)
+            return Math.max(nums[0], nums[1]);
+
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        for(int i = 2; i<nums.length - 1; i++){
+            dp[i] = Math.max(dp[i-1], dp[i - 2]+nums[i]);
+        }
+        ans = dp[nums.length - 2];
+
+        //重新弄第二次
+        dp[1] = nums[1];
+        dp[2] = Math.max(nums[1], nums[2]);
+        for(int i = 3; i<nums.length; i++){
+            dp[i] = Math.max(dp[i-1], dp[i - 2]+nums[i]);
+        }
+
+        ans = Math.max(dp[nums.length - 1], ans);
+        return ans;
+    }
 }

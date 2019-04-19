@@ -1,12 +1,35 @@
 package medium;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.util.*;
+
+//二叉树，带一个next指针指向水平右侧的节点(默认是完美二叉树，即满二叉树）
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val,Node _left,Node _right,Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
 
 public class DFS_Medium_notComplete {
     public static void main(String args[]){
         DFS_Medium_notComplete main = new DFS_Medium_notComplete();
         //System.out.println(main.isAdditiveNumber("199111992"));
         //char[][] board = {{'C','A','A'},{'A','A','A'},{'B','C','D'}};
+
+        int d = 1, b = 2;
+        d = b = 0;
+        System.out.println(d+""+b);
         int[] a = {3,5,2};
         Arrays.sort(a);
         ArrayList<Integer> c = new ArrayList<>();
@@ -407,6 +430,122 @@ public class DFS_Medium_notComplete {
             //必须是new ArrayList<Integer>(temp)而不是直接add（temp)，这样就是放了引用而已，temp.remove会删掉一切
             list.add(new ArrayList<Integer>(temp));
         temp.remove(temp.size() - 1);
+    }
+
+    //105. 从前序与中序遍历序列构造二叉树
+    //preorder第一个元素为root，在inorder里面找到root，在它之前的为左子树（长l1），之后为右子树（长l2）。
+    // preorder[1]到preorder[l1]为左子树,之后为右子树，分别递归。
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if(preorder.length<=0 || inorder.length <= 0)
+            return null;
+        if(preorder.length == 1)
+            return new TreeNode(preorder[0]);
+
+        int rootVal = preorder[0];
+        TreeNode root = new TreeNode(rootVal);
+
+        for(int i = 0; i<inorder.length; i++){
+            if(inorder[i] == rootVal){
+                /*Arrays.copyOfRange(T[ ] original,int from,int to)
+
+                将一个原始的数组original，从小标from开始复制，复制到小标to，生成一个新的数组。
+
+                注意这里包括下标from，不包括上标to。*/
+                root.left = buildTree(Arrays.copyOfRange(preorder, 1, i+1), Arrays.copyOfRange(inorder, 0,i));
+                root.right = buildTree(Arrays.copyOfRange(preorder, i+1, preorder.length), Arrays.copyOfRange(inorder, i+1,inorder.length));
+            }
+        }
+
+
+        return root;
+    }
+
+
+    //106. 从中序与后序遍历序列构造二叉树
+    public TreeNode buildTree2(int[] inorder, int[] postorder) {
+        if(inorder.length == 0 || postorder.length == 0)
+            return null;
+        TreeNode root = new TreeNode(postorder[postorder.length - 1]);
+        if(inorder.length == 1)
+            return root;
+        int rootVal = postorder[postorder.length - 1];
+        for(int i = 0; i<inorder.length; i++){
+            if(inorder[i] == rootVal){
+                root.left = buildTree2(Arrays.copyOfRange(inorder, 0, i), Arrays.copyOfRange(postorder, 0,i));
+                root.right = buildTree2(Arrays.copyOfRange(inorder, i+1, inorder.length), Arrays.copyOfRange(postorder, i,postorder.length - 1));
+            }
+        }
+        return root;
+    }
+
+
+    //109. 有序链表转换二叉搜索树, 类似上面两个创造树，使用快慢指针，一个单步走，一个双步走
+    public TreeNode sortedListToBST(ListNode head) {
+        TreeNode ans = dfsSorted(head, null);
+        return ans;
+    }
+    public TreeNode dfsSorted(ListNode head, ListNode tail){
+        if(head == tail)
+            return null;
+        ListNode fast = head;
+        ListNode slow = head;
+
+        //通过快慢指针找到中间节点
+        while(fast!=tail && fast.next!=tail){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        TreeNode root = new TreeNode(slow.val);
+        root.left = dfsSorted(head, slow);
+        root.right = dfsSorted(slow.next, tail);
+        return root;
+    }
+
+    //114. 二叉树展开为链表，就是个先序遍历
+    //深度优先遍历
+    //思想：先序遍历树，将节点插入到list中，再构造链表
+    //注意：遍历返回之前要将节点的左右子节点为nul
+    public void flatten(TreeNode root) {
+        List<TreeNode> list = new ArrayList<>();
+        if(root == null)
+            return;
+        dfsFlatten(root, list);
+        for(int i = 0; i<list.size() - 1; i++){
+            list.get(i).right = list.get(i+1);
+        }
+    }
+    public void dfsFlatten(TreeNode root, List<TreeNode> list){
+        list.add(root);
+        if(root.left!=null)
+            dfsFlatten(root.left, list);
+        if(root.right!=null)
+            dfsFlatten(root.right, list);
+        root.left = root.right = null;
+    }
+
+
+    //116. 填充每个节点的下一个右侧节点指针，要求常数空间，然而链表就是常数空间嘻嘻嘻
+    public Node connect(Node root) {
+        Queue<Node> queue = new LinkedList<>();
+        if(root == null)
+            return root;
+        queue.add(root);
+        while(!queue.isEmpty()){
+            int count = queue.size();
+            while (count!=0){
+                Node temp = queue.poll();
+                count--;
+                if(count!=0){
+                    temp.next = queue.peek();
+                }
+                if(temp.left!=null)
+                    queue.offer(temp.left);
+                if(temp.right!=null)
+                    queue.offer(temp.right);
+            }
+        }
+        return root;
     }
 
 }

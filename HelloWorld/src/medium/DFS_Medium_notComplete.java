@@ -2,6 +2,7 @@ package medium;
 
 import com.sun.org.apache.regexp.internal.RE;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 //二叉树，带一个next指针指向水平右侧的节点(默认是完美二叉树，即满二叉树）
@@ -26,6 +27,10 @@ public class DFS_Medium_notComplete {
         DFS_Medium_notComplete main = new DFS_Medium_notComplete();
         //System.out.println(main.isAdditiveNumber("199111992"));
         //char[][] board = {{'C','A','A'},{'A','A','A'},{'B','C','D'}};
+
+        String s1 = "lrs";
+        String s2 = "cxs";
+        System.out.println(s1.compareTo(s2));
 
         int d = 1, b = 2;
         d = b = 0;
@@ -548,4 +553,87 @@ public class DFS_Medium_notComplete {
         return root;
     }
 
+    //988. 从叶结点开始的最小字符串
+    public String smallestFromLeaf(TreeNode root) {
+        List<List<TreeNode>> list = new ArrayList<>();
+        if(root == null)
+            return "";
+        List<TreeNode> node = new ArrayList<>();
+        dfsSmall(root, list, node);
+
+        List<String> str = new ArrayList<>();
+        for(List<TreeNode> val: list){
+            String temp = "";
+            for(TreeNode s:val){
+                temp+=(char)('a'+s.val);
+            }
+            str.add(new StringBuffer(temp).reverse().toString());
+        }
+
+        int size = str.size();
+        if(size<2)
+            return str.get(0);
+        String ans = str.get(0);
+        for(int i = 1; i<size; i++){
+            if(ans.compareTo(str.get(i))>0) {
+                ans = str.get(i);
+            }
+        }
+
+        return ans;
+    }
+    public void dfsSmall(TreeNode root, List<List<TreeNode>> list, List<TreeNode> node){
+        if(root!=null)
+            node.add(root);
+        if(root.left!=null)
+            dfsSmall(root.left, list, node);
+        if(root.right!=null)
+            dfsSmall(root.right, list, node);
+        if(root.left == null && root.right == null)
+            //一定要新new一个ArrayList!!!!不然就只是一直指向同一个对象！！！！
+            list.add(new ArrayList<>(node));
+        node.remove(node.size() - 1);
+    }
+
+
+    //979. 在二叉树中分配硬币
+    /*如果树的叶子仅包含 0 枚金币（与它所需相比，它的 过载量 为 -1），那么我们需要从它的父亲节点移动一枚金币到这个叶子节点上。
+    如果说，一个叶子节点包含 4 枚金币（它的 过载量 为 3），那么我们需要将这个叶子节点中的 3 枚金币移动到别的地方去。
+    总的来说，对于一个叶子节点，需要移动到它中或需要从它移动到它的父亲中的金币数量为 过载量 = Math.abs(num_coins - 1)。
+    然后，在接下来的计算中，我们就再也不需要考虑这些已经考虑过的叶子节点了。*/
+    int coins = 0;
+    public int distributeCoins(TreeNode root) {
+        dfsCoins(root);
+        return coins;
+    }
+    public int dfsCoins(TreeNode root){
+        if(root == null)
+            return 0;
+        int l = 0;
+        int r = 0;
+        if(root.left!=null){
+            l = dfsCoins(root.left);
+            coins+=Math.abs(l);
+        }
+        if(root.right!=null){
+            r = dfsCoins(root.right);
+            coins+=Math.abs(r);
+        }
+        //返回的是root节点的过载量，如果子树过载量是负数，需要root交硬币给子树，则root的过载量会变小，所以
+        //不能用子树过载量的绝对值相加！！
+        return l+r+root.val - 1;
+    }
+
+
+    //971. 翻转二叉树以匹配先序遍历
+    public List<Integer> flipMatchVoyage(TreeNode root, int[] voyage) {
+        List<Integer> ans = new ArrayList<>();
+        return ans;
+    }
+
+    //337. 打家劫舍 III
+    public int rob(TreeNode root) {
+        int ans = 0;
+        return ans;
+    }
 }

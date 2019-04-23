@@ -3,13 +3,76 @@ import java.util.*;
 class TreeNode{
     int val;
     List<TreeNode> children;
+    boolean isBlack;
 }
+
 public class Test7 {
     public static void main(String args[]){
       Test7 test = new Test7();
       test.method2();
       //test.method1();
     }
+
+    public void method3() {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        if(n<=0){
+            System.out.println(0);
+            return;
+        }
+        if(n == 1){
+            System.out.println(1);
+            return;
+        }
+        TreeNode tree = new TreeNode();
+
+        String root = sc.nextLine();
+        String[] r = root.split(" ");
+        String color = sc.nextLine();
+        String[] c = color.split(" ");
+        Map<Integer,TreeNode> map = new TreeMap<>();
+
+        //建树
+        for(int i = 0; i<n; i++){
+            TreeNode temp = new TreeNode();
+            temp.val = i;
+            temp.isBlack = c[i] == "1"?true:false;
+            map.put(i, temp);
+        }
+
+        for(int i = 0; i<n; i++){
+            if(map.get(Integer.parseInt(r[i])).children == null){
+                List<TreeNode> children = new ArrayList<>();
+                children.add(map.get(i));
+                map.get(Integer.parseInt(r[i])).children = children;
+            }else{
+                map.get(Integer.parseInt(r[i])).children.add(map.get(i));
+            }
+        }
+
+        int ans = preOrder(map.get(0));
+        //前序遍历
+        System.out.println(ans);
+        return;
+    }
+
+    public int preOrder(TreeNode root){
+        int ans = 1;
+        List<TreeNode> children = root.children;
+        if(children == null)
+            return 1;
+        if(root.isBlack){
+            for(int i = 0; i<children.size(); i++){
+                int temp = 0;
+                if(!children.get(i).isBlack){
+                    ans++;
+                    ans = ans+preOrder(children.get(i));
+                }
+            }
+        }
+        return ans;
+    }
+
 
     public void method2(){
         Scanner sc = new Scanner(System.in);
@@ -99,5 +162,8 @@ public class Test7 {
             return max+1;
         }
     }
+
+
+
 
 }

@@ -1,18 +1,16 @@
 package medium;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Math_Medium_notComplete {
     public static void main(String[] args){
         Math_Medium_notComplete main = new Math_Medium_notComplete();
-        //main.myAtoi("-91283472332");
-        //main.method2();
-        System.out.println(main.method1("  -9"));
+        //System.out.println(main.myantoni2("  -9"));
+        //System.out.println(main.getPermutation(4,2));
+        System.out.println(main.fractionToDecimal(2,3));
     }
 
-    public long method1(String str){
+    public long myantoni2(String str){
         long ans = 0;
         if(str == null || "".equals(str) || "".equals(str.trim())){
             return 0;
@@ -57,7 +55,7 @@ public class Math_Medium_notComplete {
             return isPositive?ans:-ans;
     }
 
-    public int method2(){
+    public int ballsAndBaskets(){
         int ans = 0;
         Scanner in = new Scanner(System.in);
         int n = in.nextInt();
@@ -168,5 +166,114 @@ public class Math_Medium_notComplete {
         }
         return ans.toString();
     }
+
+    //43. 字符串相乘，emmm，类似大数相乘
+    public String multiply(String num1, String num2) {
+        StringBuffer ans = new StringBuffer("");
+
+        //result[i+j]到result[i+j+1]是num1的第i位 * num2的第j位
+        int[] result = new int[num1.length()+num2.length()];
+
+        for(int i = num1.length() - 1; i>=0; i--){
+            for(int j = num2.length() - 1; j>=0; j--){
+                int multi = (num1.charAt(i)-'0') *(num2.charAt(j)-'0');
+                multi+=result[i+j+1];
+                int add = multi / 10;
+                result[i+j+1] = multi % 10;
+                result[i+j]+=add;
+            }
+        }
+
+        boolean isZero = true;
+        for(int i = 0; i<num1.length()+num2.length(); i++){
+            if(isZero && result[i] == 0)
+                continue;
+            ans.append(result[i]);
+            isZero = false;
+        }
+        if(isZero)
+            return "0";
+        return ans.toString();
+    }
+
+    //60. 第k个排列，不用求出所有序列，如果刚好落在循环内则顺序添加list元素
+    public String getPermutation(int n, int k) {
+        StringBuffer ans = new StringBuffer("");
+
+
+        List<Integer> list = new ArrayList<>();
+        for(int i = 0; i<n; i++){
+            list.add(i+1);
+        }
+
+        k--;
+
+        while(list.size()!=0){
+            int index = k / permutation(n-1);
+            ans.append(list.get(index));
+            list.remove(index);
+            k = k % permutation(n-1);
+            n--;
+        }
+        return ans.toString();
+    }
+    //求阶乘
+    public int permutation(int n){
+        if(n == 1 || n == 0)
+            return 1;
+        else return n*permutation(n-1);
+    }
+
+
+    //166. 分数到小数
+    public String fractionToDecimal(int numerator, int denominator) {
+        StringBuffer ans = new StringBuffer("");
+        //考虑是否为负数，还要考虑溢出= =
+
+
+        //好坑，存在使用abs会溢出的测试用例= =  要用Long
+        Long dummyNumerator = new Long(numerator);
+        Long dummyDenominator = new Long(denominator);
+
+        if(dummyNumerator*dummyDenominator<0){
+            ans.append("-");
+        }
+
+        dummyDenominator = Math.abs(dummyDenominator);
+        dummyNumerator = Math.abs(dummyNumerator);
+
+        //先算整数部分
+        if(dummyNumerator/dummyDenominator!=0)
+            ans.append(String.valueOf(dummyNumerator/dummyDenominator));
+        else
+            ans.append(String.valueOf("0"));
+
+        dummyNumerator = dummyNumerator%dummyDenominator;
+        if(dummyNumerator == 0)
+            return ans.toString();
+
+        ans.append(String.valueOf("."));
+        //如果有余数，则余数乘10，接着往下除，得到的商是小数点后的数字
+        //只要出现一个出现过的余数就可以返回了。注意是出现一个余数！！而不是小数中的随便一位！！！
+        Map<Long, Integer> map = new HashMap<>();
+
+
+        while(dummyNumerator!=0){
+            dummyNumerator*=10;
+            Long value = dummyNumerator / dummyDenominator;
+            if(map.containsKey(dummyNumerator)){
+                int index = map.get(dummyNumerator);
+                ans.insert(index,"(");
+                ans.append(")");
+                return ans.toString();
+            }else{
+                map.put(dummyNumerator,ans.length());
+                ans.append(String.valueOf(value));
+                dummyNumerator = dummyNumerator%dummyDenominator;
+            }
+        }
+        return ans.toString();
+    }
+
 
 }

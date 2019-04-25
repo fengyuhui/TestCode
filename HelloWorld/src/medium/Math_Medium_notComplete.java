@@ -229,8 +229,6 @@ public class Math_Medium_notComplete {
     public String fractionToDecimal(int numerator, int denominator) {
         StringBuffer ans = new StringBuffer("");
         //考虑是否为负数，还要考虑溢出= =
-
-
         //好坑，存在使用abs会溢出的测试用例= =  要用Long
         Long dummyNumerator = new Long(numerator);
         Long dummyDenominator = new Long(denominator);
@@ -256,8 +254,6 @@ public class Math_Medium_notComplete {
         //如果有余数，则余数乘10，接着往下除，得到的商是小数点后的数字
         //只要出现一个出现过的余数就可以返回了。注意是出现一个余数！！而不是小数中的随便一位！！！
         Map<Long, Integer> map = new HashMap<>();
-
-
         while(dummyNumerator!=0){
             dummyNumerator*=10;
             Long value = dummyNumerator / dummyDenominator;

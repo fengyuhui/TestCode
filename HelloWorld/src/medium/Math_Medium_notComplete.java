@@ -9,7 +9,8 @@ public class Math_Medium_notComplete {
         Math_Medium_notComplete main = new Math_Medium_notComplete();
         //main.myAtoi("-91283472332");
         //main.method2();
-        System.out.println(main.method1("  -9"));
+        //System.out.println(main.method1("  -9"));
+
     }
 
     public long method1(String str){

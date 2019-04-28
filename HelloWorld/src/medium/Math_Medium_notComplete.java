@@ -12,7 +12,7 @@ public class Math_Medium_notComplete {
         //main.method2();
         //System.out.println(main.method1("  -9"));
 
-        
+
         //System.out.println(main.myantoni2("  -9"));
         //System.out.println(main.getPermutation(4,2));
         System.out.println(main.fractionToDecimal(2,3));

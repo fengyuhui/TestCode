@@ -13,7 +13,9 @@ public class SlidingWindow_Medium_notComplete {
         //int[] A = {1,2,3,4,5};
         //main.minSubArrayLen(11,A);
         //main.checkInclusion("hello","ooolleoooleh");
-        System.out.println(main.minWindow("ABAB", "AB"));
+        //System.out.println(main.minWindow("ABAB", "AB"));
+        int[] a = {1,3,1,2,0,5};
+        System.out.println(main.maxSlidingWindow(a,3));
     }
 
     //1004. 最大连续1的个数 III
@@ -254,7 +256,7 @@ public class SlidingWindow_Medium_notComplete {
                         }
 
                         //若是符合条件下，滑动窗口大于t.length，一定是优先移动左指针，然后再查看长度是否还有更小的
-                        //因为一旦是符合条件，最后符合条件的那个字符一定是右指针目前指向
+                        //因为一旦是符合条件，最后符合条件的那个字符一定是右指针目前所指
                         pNums[s.charAt(left)-'A']--;
                         left++;
                     }
@@ -266,12 +268,136 @@ public class SlidingWindow_Medium_notComplete {
     }
 
     //978. 最长湍流子数组
+    //题解真是令人拍案叫绝
+    /*显然，我们只需要关注相邻两个数字之间的符号就可以了。 如果用 -1, 0, 1 代表比较符的话（分别对应 <、 =、 >），
+    那么我们的目标就是在符号序列中找到一个最长的元素交替子序列 1, -1, 1, -1, ...（从 1 或者 -1 开始都可以）。
+    这些交替的比较符会形成若干个连续的块 。我们知道何时一个块会结束：当已经到符号序列末尾的时候或者当序列元素不再交替的时候。
+    举一个例子，假设给定数组为 A = [9,4,2,10,7,8,8,1,9]。那么符号序列就是 [1,1,-1,1,-1,0,-1,1]。它可以被划分成的块为 [1], [1,-1,1,-1], [0], [-1,1]。*/
+    //非常巧妙地用两个compare方法解决了
     public int maxTurbulenceSize(int[] A) {
-        int ans = 0;
+        int ans = 1;
+        int flag = 0;
 
-        
+        for(int i = 1; i<A.length; i++){
+            int temp = Integer.compare(A[i-1], A[i]);
+            if(i == A.length-1 || temp * Integer.compare(A[i], A[i+1]) != -1){
+                if(temp!=0){
+                    //防止一直都是相等值，这样ans会等于2。只要前后不同，则length最小是2。但是如果前后相同，则length只能是1
+                    ans = Math.max(ans, i-flag+1);
+                }
+                flag = i;
+
+            }
+        }
 
         return ans;
     }
 
+    //239. 滑动窗口最大值
+    //双向队列实现
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if(nums == null || nums.length <= 1)
+            return nums;
+
+        int[] ans = new int[nums.length-k+1];
+        //双向队列
+        int left = 0;
+        Deque<Integer> deque = new ArrayDeque<>();
+        for(int i = 0; i<nums.length; i++){
+            //已出窗口的值，弹出
+            if(i>=k && deque.getFirst()<=i-k)
+                deque.pollFirst();
+            //当窗内元素不为空且队首元素小于当前元素，弹出队首
+            while(!deque.isEmpty() && nums[deque.peekLast()]<=nums[i])
+                deque.pollLast();
+
+            //压入最新元素，比它小的都被弹出去了，剩下的队首是比它大的
+            deque.offerLast(i);
+            if(i>=k-1){
+                ans[i-k+1] = nums[deque.peekFirst()];
+            }
+        }
+        return ans;
+    }
+
+    //480. 滑动窗口中位数
+    public double[] medianSlidingWindow(int[] nums, int k) {
+        double[] ans = new double[nums.length-k+1];
+
+
+
+        return ans;
+    }
+
+
+    //992. K 个不同整数的子数组
+    public int subarraysWithKDistinct(int[] A, int K) {
+        int ans = 0;
+        Window window1 = new Window();
+        Window window2 = new Window();
+        int left1 = 0, left2 = 0;
+
+        for(int i = 0; i<A.length; i++){
+            int temp = A[i];
+            window1.add(temp);
+            window2.add(temp);
+
+            while(window1.getDiff()>K){
+                window1.remove(A[left1]);
+                left1++;
+            }
+
+            //这个大于等于就是用来计算和window1不同的个数的
+            //window1代表最多K-1个不同
+            //window2代表最多K个不同
+            //则刚好K个不同就是window2-window1
+            while(window2.getDiff()>=K){
+                window2.remove(A[left2]);
+                left2++;
+            }
+
+            ans+=left2-left1;
+        }
+        return ans;
+    }
+
+    //992的辅助类——滑动窗口
+    class Window{
+        int diff;
+        Map<Integer, Integer> count;
+        Window(){
+            diff = 0;
+            count = new HashMap<>();
+        }
+
+        void add(int a){
+            //喜大普奔！！jdk1.8提供map的一个put方法，如果key不存在则put(key, defaultValue)
+            //再也不用苦兮兮地每次做判断了！
+            count.put(a, count.getOrDefault(a,0)+1);
+            if(count.get(a) == 1){
+                diff++;
+            }
+        }
+
+        void remove(int a){
+            count.put(a, count.get(a)-1);
+            if(count.get(a) == 0){
+                diff--;
+            }
+        }
+
+        int getDiff(){
+            return diff;
+        }
+    }
+
+
+    //995. K 连续位的最小翻转次数
+    public int minKBitFlips(int[] A, int K) {
+        int ans = 0;
+
+
+
+        return ans;
+    }
 }

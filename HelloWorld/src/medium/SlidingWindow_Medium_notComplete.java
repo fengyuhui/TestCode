@@ -13,7 +13,7 @@ public class SlidingWindow_Medium_notComplete {
         //int[] A = {1,2,3,4,5};
         //main.minSubArrayLen(11,A);
         //main.checkInclusion("hello","ooolleoooleh");
-        main.minWindow("AA", "AA");
+        System.out.println(main.minWindow("ABAB", "AB"));
     }
 
     //1004. 最大连续1的个数 III
@@ -202,7 +202,6 @@ public class SlidingWindow_Medium_notComplete {
     还有中间的6个非字母  A~Z[65~90]  非字母[91~96]  a~z[97~122]*/
     //以后这种题可以不用map了，map是真的烦
     public String minWindow(String s, String t) {
-        String ans="";
         int[] nums = new int[64];
         int[] pNums = new int[64];
         for(int i = 0; i<t.length(); i++){
@@ -211,32 +210,66 @@ public class SlidingWindow_Medium_notComplete {
 
         if(s.length()<t.length())
             return "";
-        int left = 0,right = 0;
+        int left = 0,right = -1;
+        int resultL = 0, resultR = s.length()+1;
 
         while(left<=s.length()-t.length()){
             //当窗口小于t.length时，右指针向右滑动
             if(right-left+1<t.length()){
                 //要判断数组越界
-                if(right-left<t.length()){
-                    pNums[s.charAt(right)-'A']++;
+                if(right<s.length()-1){
                     right++;
+                    pNums[s.charAt(right)-'A']++;
                     continue;
                 }else{
                     break;
                 }
-            }else if(right-left+1==t.length()){//当窗口大小等于t.length()时，判断是否符合条件，是就返回
+            }else{//当窗口大小等于t.length()时，判断是否符合条件，是就返回
                 int i = 0;
                 for(; i<64; i++){
-                    if(nums[i]!=pNums[i]) {
+                    if(nums[i]>pNums[i]) {
                         break;
                     }
                 }
-                //还是要记得判断数组越界
+                //不符合条件
                 if(i<64){
-                    //不符合条件，右指针滑动
+                    //右指针没有到最右端时，右指针滑动
+                    if(right<s.length()-1){
+                        right++;
+                        pNums[s.charAt(right)-'A']++;
+                        continue;
+                    }else{
+                        //右指针到最右端时，左指针滑动
+                        pNums[s.charAt(left)-'A']--;
+                        left++;
+                    }
+                }else{
+                    //符合条件且滑窗大小等于t.length，直接返回
+                    if(right-left+1==t.length()){
+                        return s.substring(left, right+1);
+                    }else{
+                        if(resultR-resultL>right-left){
+                            resultL = left;
+                            resultR = right;
+                        }
+
+                        //若是符合条件下，滑动窗口大于t.length，一定是优先移动左指针，然后再查看长度是否还有更小的
+                        //因为一旦是符合条件，最后符合条件的那个字符一定是右指针目前指向
+                        pNums[s.charAt(left)-'A']--;
+                        left++;
+                    }
                 }
             }
         }
+
+        return resultR==s.length()+1?"":s.substring(resultL, resultR+1);
+    }
+
+    //978. 最长湍流子数组
+    public int maxTurbulenceSize(int[] A) {
+        int ans = 0;
+
+        
 
         return ans;
     }

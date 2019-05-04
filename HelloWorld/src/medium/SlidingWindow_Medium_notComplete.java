@@ -331,6 +331,7 @@ public class SlidingWindow_Medium_notComplete {
 
 
     //992. K 个不同整数的子数组
+    //双滑窗
     public int subarraysWithKDistinct(int[] A, int K) {
         int ans = 0;
         Window window1 = new Window();
@@ -395,8 +396,6 @@ public class SlidingWindow_Medium_notComplete {
     //995. K 连续位的最小翻转次数
     public int minKBitFlips(int[] A, int K) {
         int ans = 0;
-
-
 
         return ans;
     }

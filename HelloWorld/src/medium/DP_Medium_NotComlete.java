@@ -22,6 +22,7 @@ public class DP_Medium_NotComlete {
     public static void main(String[] args){
         DP_Medium_NotComlete main = new DP_Medium_NotComlete();
         int[] a = {10,9,2,5,3,7,101,18};
+        main.longestPalindrome("babad");
         //main.lengthOfLIS(a);
         String s = "leetcode";
         List list = new ArrayList();
@@ -30,13 +31,7 @@ public class DP_Medium_NotComlete {
         main.wordBreak(s,list);
     }
 
-    //5. 最长回文子串，不能将s reverse 再求最长子序列！！应该是reverse 之后求最长子串，且字串的原始下标一致！！比如abcdghcba,abc并不是它的最长回文子串
-    public String longestPalindrome(String s) {
-        return "";
-    }
-
     //133. 克隆图
-
 // Definition for a Node.
 class Node {
     public int val;
@@ -447,5 +442,59 @@ class Node {
 
         ans = Math.max(dp[nums.length - 1], ans);
         return ans;
+    }
+
+    //647. 回文子串
+    public int countSubstrings(String s) {
+        int ans = 0;
+
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        for(int i = 0; i<s.length(); i++){
+            dp[i][i] = true;
+            for(int j = 0; j<i; j++){
+                if(s.charAt(i) == s.charAt(j)){
+                    //双中心点
+                    if(j+1==i)
+                        dp[j][i] = true;
+                    //单中心点
+                    else
+                        dp[j][i] = dp[j+1][i-1];
+                }
+                if(dp[j][i])
+                    ans++;
+            }
+        }
+        //注意单个字母也算是一个回文（循环中i!=j），所以最后结果要加上s的长度
+        return ans+s.length();
+    }
+
+
+    //5. 最长回文子串，这次不是求长度，是要求子串，也不是求子序列了
+    public String longestPalindrome(String s) {
+        if(s==null || "".equals(s))
+            return s;
+        int start = 0, end = 0;
+        //依旧要从双中心和单中心开始考虑
+        for(int i = 0; i<s.length(); i++) {
+            int maxLen1 = maxLen(s, i, i);
+            int maxLen2 = maxLen(s, i, i+1);
+            int maxLen = Math.max(maxLen1, maxLen2);
+            if(maxLen>end-start){
+                end = i+maxLen/2;
+                start = i-(maxLen-1)/2;
+            }
+        }
+        return s.substring(start, end+1);
+    }
+
+    private int maxLen(String s, int left, int right){
+         int r = right, l = left;
+         while(l>=0&&r<s.length()&&s.charAt(l) == s.charAt(r)){
+            l--;
+            r++;
+        }
+        l++;
+        r--;
+        return r-l+1;
     }
 }

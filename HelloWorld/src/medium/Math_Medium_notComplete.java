@@ -333,4 +333,26 @@ public class Math_Medium_notComplete {
         return isNegative?-ans:ans;
     }
 
+
+    //799. ÏãéÄËş
+    public double champagneTower(int poured, int query_row, int query_glass) {
+        double ans = 0;
+
+        double[][] champagne = new double[query_row+2][query_glass+2];
+        champagne[0][0] = poured;
+
+        for(int i = 0; i<query_row+1; i++){
+            for(int j = 0; j<query_glass+1; j++){
+                if(champagne[i][j]>1){
+                    double left = champagne[i][j] - 1;
+                    champagne[i][j] = 1;
+                    champagne[i+1][j] +=left/2;
+                    champagne[i+1][j+1] +=left/2;
+                }
+            }
+        }
+        ans = champagne[query_row][query_glass];
+        return ans;
+    }
+
 }

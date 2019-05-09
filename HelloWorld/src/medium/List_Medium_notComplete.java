@@ -152,5 +152,34 @@ public class List_Medium_notComplete {
         return ans;
     }
 
+    //142. 环形链表 II
+    public ListNode detectCycle(ListNode head) {
+        ListNode ans = head;
+
+        //先判断有没有环，没有就直接返回null
+        //使用快慢指针
+        ListNode fast = head, slow = head;
+        ListNode inter = null;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(fast == slow){
+                inter = fast;
+                break;
+            }
+        }
+        //无环
+        if(inter == null)
+            return null;
+
+        //查找环起点
+        ListNode cur = head;
+        while(cur!=inter){
+            cur = cur.next;
+            inter = inter.next;
+        }
+
+        return cur;
+    }
 }
 

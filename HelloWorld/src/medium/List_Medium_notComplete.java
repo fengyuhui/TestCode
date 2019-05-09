@@ -181,5 +181,24 @@ public class List_Medium_notComplete {
 
         return cur;
     }
+
+    //206. 反转链表
+    public ListNode reverseList(ListNode head) {
+        //设置一个虚假头节点
+        if(head == null)
+            return head;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+
+        ListNode cur = head.next, pre = head;
+
+        while(cur!=null){
+            pre.next = cur.next;
+            cur.next = dummy.next;
+            dummy.next = cur;
+            cur = pre.next;
+        }
+        return dummy.next;
+    }
 }
 

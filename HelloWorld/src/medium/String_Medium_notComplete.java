@@ -131,6 +131,17 @@ public class String_Medium_notComplete {
     }
 
 
+    //1016. 子串能表示从 1 到 N 数字的二进制串
+    //这题用两个函数就可以解决了ORZ
+    public boolean queryString(String S, int N) {
+        for(int i = 1; i<=N; i++){
+            String temp = Integer.toBinaryString(i);
+            if(S.indexOf(temp)==-1){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 }

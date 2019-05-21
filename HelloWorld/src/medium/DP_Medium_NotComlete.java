@@ -497,4 +497,23 @@ class Node {
         r--;
         return r-l+1;
     }
+
+
+    //1014. 最佳观光组合
+    //result = A[i]+i+A[j]-j，所以分成两部分A[i]+i和A[j]-j，求这两部分和的最大值
+    public int maxScoreSightseeingPair(int[] A) {
+        int ans = Integer.MIN_VALUE;
+        if(A.length == 0)
+            return 0;
+        if(A.length == 1)
+            return A[0];
+        int startValue = A[0];
+        for(int j = 1; j<A.length; j++){
+            ans = Math.max(ans, startValue+A[j]-j);
+            startValue = Math.max(startValue, A[j]+j);
+        }
+        return ans;
+    }
+
+
 }

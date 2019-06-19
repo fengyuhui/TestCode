@@ -9,6 +9,7 @@ class TreeNode{
 public class Test7 {
     public static void main(String args[]){
       Test7 test = new Test7();
+      System.out.println("test");
       test.method2();
       //test.method1();
     }

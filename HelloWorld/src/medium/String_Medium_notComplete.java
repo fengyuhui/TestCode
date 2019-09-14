@@ -5,7 +5,8 @@ import java.util.Stack;
 public class String_Medium_notComplete {
     public static void main(String[] args){
         String_Medium_notComplete test = new String_Medium_notComplete();
-        test.decodeString("3[a]2[bc]");
+        //test.decodeString("3[a]2[bc]");
+        System.out.println(test.compareVersion("6.6.6", "6.6.7"));
     }
 
     //227. 基本计算器 II 主要是减法的话，就把后面的数字变为负数。并且小心数字>10的情况

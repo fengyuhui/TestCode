@@ -8,8 +8,20 @@ public class Test8 {
         Test8 main = new Test8();
         //main.metohd2();
         int a[][] = {{4,8},{4,9},{2,4},{0,2},{5,7}};
-        int r = main.method3(a);
-        System.out.println(r);
+       // int r = main.method3(a);
+        //System.out.println(r);
+        main.method5();
+    }
+
+    public void method5(){
+        int n = fun2(fun1(101))%4;
+        System.out.println(n);
+    }
+    int fun1(int i){
+        return i<=5?i : fun1(i-1) * fun1(i-3);
+    }
+    int fun2(int i){
+        return ((i>>8)&0x6597)&(((i<<8)&0x6597)>>8);
     }
     public void metohd1(){
         Scanner sc = new Scanner(System.in);

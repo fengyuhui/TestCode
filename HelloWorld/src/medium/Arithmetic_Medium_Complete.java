@@ -1,5 +1,8 @@
 package medium;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Arithmetic_Medium_Complete {
     public static void main(String[] args){
         Arithmetic_Medium_Complete main = new Arithmetic_Medium_Complete();
@@ -57,4 +60,47 @@ public class Arithmetic_Medium_Complete {
         return true;
     }
 
+    //13. 罗马数字转整数
+    //罗马数字遵循左减右加，且右边的数字如果小于左边是相加，左边的数字如果小于右边是相减
+    public int romanToInt(String s) {
+        int ans = 0;
+        int size = s.length();
+        //做映射
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('I' , 1);
+        map.put('V' , 5);
+        map.put('X' , 10);
+        map.put('L' , 50);
+        map.put('C' , 100);
+        map.put('D' , 500);
+        map.put('M' , 1000);
+        for(int i = 0; i<size; i++){
+            if(i == size - 1){
+                ans+=map.get(s.charAt(i));
+            }else{
+                int now = map.get(s.charAt(i));
+                int next = map.get(s.charAt(i+1));
+                if(now>=next){
+                    ans+=now;
+                }else{
+                    ans-=now;
+                }
+            }
+        }
+        return ans;
+    }
+
+    //12.整数转罗马数字
+    public String intToRoman(int num) {
+        StringBuffer stringBuffer = new StringBuffer("");
+        int[] n = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] s = {"M", "CM","D","CD","C","XC","L", "XL", "X", "XI", "V", "I"};
+        for(int i = 0; i<13; i++){
+            while(num>n[i]){
+                num -= n[i];
+                stringBuffer.append(s[i]);
+            }
+        }
+        return stringBuffer.toString();
+    }
 }

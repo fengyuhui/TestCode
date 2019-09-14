@@ -281,9 +281,9 @@ public class DFS_Medium_notComplete {
             return 0;
         visited[i][j] = 1;
         ans = 1 +dfsArea(row, col, grid, i, j+1,visited)
-        +dfsArea(row, col, grid, i+1, j, visited)
-        +dfsArea(row, col, grid, i-1, j,visited)
-        +dfsArea(row, col, grid, i, j-1, visited);
+                +dfsArea(row, col, grid, i+1, j, visited)
+                +dfsArea(row, col, grid, i-1, j,visited)
+                +dfsArea(row, col, grid, i, j-1, visited);
         return ans;
     }
 

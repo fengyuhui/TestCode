@@ -9,7 +9,8 @@ public class Test9 {
         Test9 test = new Test9();
         test.method2();
     }
-    public static void method2(){
+
+    public void method2(){
         Scanner in = new Scanner(System.in);
         Integer n = in.nextInt();
         Integer m = in.nextInt();

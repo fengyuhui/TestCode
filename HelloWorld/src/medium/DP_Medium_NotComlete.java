@@ -516,4 +516,63 @@ class Node {
     }
 
 
+    public int solution(int[] prices, int budget) {
+        int ans = 0;
+        int size = prices.length;
+        Arrays.sort(prices);
+        for(int i = size-1; i>=0&&budget>0; i--) {
+            if (budget % prices[i] == 0)
+                return budget / prices[size - 1];
+        }
+
+        for(int i = size-1; i>=0&&budget>0; i--) {
+            if (budget % prices[i] == 0) {
+                ans += budget / prices[size - 1];
+                break;
+            }
+            else {
+                ans+= budget / prices[i];
+                budget = budget % prices[i];
+            }
+        }
+        ans = budget ==0?-1:ans;
+        return ans;
+    }
+    public int dfsMoney(){
+        int ans = 0;
+        return ans;
+    }
+
+    public String buildTree(String s){
+        StringBuffer stringBuffer = new StringBuffer("");
+        Tree tree = new Tree();
+        tree.val = s.charAt(0);
+        //½¨Ê÷
+        build(s.substring(1,s.length()),tree);
+        //ÖÐÐò±éÀú
+        return stringBuffer.toString();
+    }
+
+    public Tree build(String s, Tree tree){
+        for(int i = 1; i<s.length(); i++){
+            if(s.charAt(i) == '('){
+                i++;
+                if(s.charAt(i) != ','){
+                    tree.left = build(s.substring(0,s.indexOf(",",0)),tree.left);
+                }else{
+                    tree.left = null;
+                    tree.right = build(s.substring(s.indexOf(",",0),s.length()),tree.right);
+                }
+            }else if(Character.isDigit(s.charAt(i))){
+                    tree.val = s.charAt(i);
+            }
+        }
+        return tree;
+    }
 }
+
+class Tree{
+    char val;
+    Tree left;
+    Tree right;
+ }
